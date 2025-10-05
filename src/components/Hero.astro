@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets'
+
+const { src, alt, width, height } = {
+  src: 'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/15%20recostada%202.jpg',
+  alt: '15 años',
+  width: 1920,
+  height: 1080,
+}
+---
+
+<div class="relative w-screen h-screen">
+  <Image {src} {alt} {width} {height} class="absolute w-full h-full object-cover" />
+  <div class="absolute bottom-20 flex w-full justify-center">
+    <h1
+      class="font-great-vibes text-white text-6xl sm:text-7xl md:text-8xl lg:text-9xl"
+      style="text-shadow: 
+      2px 2px 0 rgba(0,0,0,0.2),
+      4px 4px 0 rgba(0,0,0,0.4),
+      6px 6px 0 rgba(0,0,0,0.6),
+      8px 8px 0 rgba(0,0,0,0.7);"
+    >
+      Mis 15 Años
+    </h1>
+  </div>
+</div>

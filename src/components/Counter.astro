@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets'
+import EmailForm from '@/components/EmailForm.tsx'
+
+const { src, alt, width, height } = {
+  src: 'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Selfie.jpg',
+  alt: 'Selfie',
+  width: 1920,
+  height: 1080,
+}
+---
+
+<div
+  class="relative w-screen h-screen font-josefin flex flex-col justify-between text-white text-center"
+>
+  <Image {src} {alt} {width} {height} class="absolute w-full h-full object-cover -z-10" />
+
+  <div class="relative text-black py-16 px-8">
+    <h2 class="font-great-vibes text-4xl sm:text-5xl">No te olvides</h2>
+    <p class="font-josefin text-base sm:text-lg mt-2 px-4">
+      Inserta tu correo para notificarte cuando falte poco para esta gran fiesta
+    </p>
+    <EmailForm client:load />
+  </div>
+
+  <div class="relative bottom-20 flex w-full justify-center">
+    <div
+      class="text-black text-center backdrop-blur-md bg-white/30 rounded-xl p-4 sm:p-6 md:p-8 mx-4"
+    >
+      <h3 class="text-3xl sm:text-4xl font-bold font-great-vibes">Faltan</h3>
+      <div id="countdown" class="flex justify-center gap-2 sm:gap-4 text-xl sm:text-2xl mt-4">
+        <div class="bg-gray-200/50 rounded-lg p-2 sm:p-4">
+          <span id="days"></span>
+          <p class="text-xs sm:text-sm">Días</p>
+        </div>
+        <div class="bg-gray-200/50 rounded-lg p-2 sm:p-4">
+          <span id="hours"></span>
+          <p class="text-xs sm:text-sm">Horas</p>
+        </div>
+        <div class="bg-gray-200/50 rounded-lg p-2 sm:p-4">
+          <span id="minutes"></span>
+          <p class="text-xs sm:text-sm">Minutos</p>
+        </div>
+        <div class="bg-gray-200/50 rounded-lg p-2 sm:p-4">
+          <span id="seconds"></span>
+          <p class="text-xs sm:text-sm">Segundos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const countdown = () => {
+    const countDate = new Date('December 20, 2025 00:00:00').getTime()
+    const now = new Date().getTime()
+    const gap = countDate - now
+
+    const second = 1000
+    const minute = second * 60
+    const hour = minute * 60
+    const day = hour * 24
+
+    const textDay = Math.floor(gap / day)
+    const textHour = Math.floor((gap % day) / hour)
+    const textMinute = Math.floor((gap % hour) / minute)
+    const textSecond = Math.floor((gap % minute) / second)
+
+    const daysEl = document.querySelector('#days')
+    const hoursEl = document.querySelector('#hours')
+    const minutesEl = document.querySelector('#minutes')
+    const secondsEl = document.querySelector('#seconds')
+
+    if (daysEl) daysEl.innerText = textDay
+    if (hoursEl) hoursEl.innerText = textHour
+    if (minutesEl) minutesEl.innerText = textMinute
+    if (secondsEl) secondsEl.innerText = textSecond
+  }
+
+  countdown() // run once immediately
+  const intervalId = setInterval(countdown, 1000)
+
+  // cleanup interval on component unmount
+  document.addEventListener('astro:page-load', () => {
+    countdown()
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    clearInterval(intervalId)
+  })
+</script>

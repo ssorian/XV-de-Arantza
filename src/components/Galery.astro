@@ -1,0 +1,51 @@
+---
+import type { loadRenderers } from 'astro:container'
+import PolaroidCarousel from './PolaroidCarousel.tsx'
+
+const images = [
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/15%20de%20pie.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/15%20recostada%202.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/15%20recostada.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Retrado%20cercano.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Retrato%20lejano.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Retrato%20sentada.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Selfie.jpg',
+]
+---
+
+<section
+  class="relative min-h-screen flex flex-col justify-center items-center py-10 px-4 overflow-hidden"
+>
+  <!-- Fondo tipo Ubication -->
+  <img
+    src="https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Background.jpg"
+    alt="Background"
+    class="absolute w-full h-full object-cover top-0 left-0 z-0"
+  />
+  <div class="absolute inset-0 bg-black/20 backdrop-blur-sm z-0"></div>
+  <div class="relative z-10 flex flex-col items-center gap-10 w-full">
+    <h2
+      class="text-4xl sm:text-5xl lg:text-6xl mb-10 font-great-vibes text-white"
+      style="font-family: var(--font-great-vibes), 'Great Vibes', cursive; text-shadow: 
+        2px 2px 0 rgba(0,0,0,0.2),
+        4px 4px 0 rgba(0,0,0,0.4),
+        6px 6px 0 rgba(0,0,0,0.6),
+        8px 8px 0 rgba(0,0,0,0.7);"
+    >
+      Galería
+    </h2>
+    <div class="w-full max-w-3xl">
+      <PolaroidCarousel client:load images={images} autoPlayInterval={3000} />
+    </div>
+  </div>
+</section>
+
+<style>
+  section img {
+    filter: saturate(1.1) contrast(1.1);
+  }
+  section img:hover {
+    filter: saturate(1.2) contrast(1.2);
+    transition: filter 0.3s ease;
+  }
+</style>

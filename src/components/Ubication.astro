@@ -1,0 +1,67 @@
+---
+import { Image } from 'astro:assets'
+import { Carousel } from '@/components/Carousel.tsx'
+import Map from '@/icons/Map.astro'
+
+const { src, alt, width, height } = {
+  src: 'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Background.jpg',
+  alt: 'Background',
+  width: 1920,
+  height: 1080,
+}
+
+const place = {
+  name: 'Salón Exhacienda el Coecillo',
+  time: '6:00 PM',
+  href: 'https://maps.app.goo.gl/L8gJLFvQxu5HmC1H9',
+}
+
+const images = [
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo1.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo2.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo3.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo4.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo5.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo6.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo7.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo8.jpg',
+  'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Coecillo9.jpg',
+]
+---
+
+<div class="relative w-screen min-h-screen font-josefin text-white">
+  <Image {src} {alt} {width} {height} class="absolute w-full h-full object-cover" />
+  <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+  <div class="relative z-10 flex flex-col items-center gap-12 py-24 px-4 sm:px-6 lg:px-8">
+    <h2
+      class="text-4xl sm:text-5xl lg:text-7xl font-great-vibes text-center"
+      style="text-shadow: 
+      1px 1px 0 rgba(0,0,0,0.2),
+      2px 2px 0 rgba(0,0,0,0.4),
+      3px 3px 0 rgba(0,0,0,0.6),
+      4px 4px 0 rgba(0,0,0,0.8),
+      5px 5px 0 rgba(0,0,0,1);"
+    >
+      Ubicación
+    </h2>
+    <div class="flex w-full flex-col items-center gap-6">
+      <p class="text-xl sm:text-2xl lg:text-6xl font-great-vibes text-center">{place.name}</p>
+
+      <a href={place.href}>
+        <div class="rounded-full bg-rose-400 p-4">
+          <Map />
+        </div>
+      </a>
+      <p class="font-josefin">Da click aqui para ver la ubicacion</p>
+      <p class="text-2xl sm:text-3xl lg:text-3xl font-bold">Te esperamos a las {place.time}</p>
+    </div>
+    <div class="flex w-full flex-col items-center gap-8">
+      <Carousel
+        images={images}
+        slideWidth="w-80 sm:w-96 md:w-[500px]"
+        slideHeight="h-56 sm:h-64 md:h-[350px]"
+        client:load
+      />
+    </div>
+  </div>
+</div>

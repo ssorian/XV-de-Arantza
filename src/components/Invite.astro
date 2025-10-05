@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets'
+
+const familyName = Astro.url.searchParams.get('nombre')
+
+interface Props {
+  passes?: number
+  whatsAppNumber?: string
+  eventDate?: string
+}
+
+const { passes = 1, whatsAppNumber = '', eventDate = '20 de Diciembre' }: Props = Astro.props
+
+const { src, alt, width, height } = {
+  src: 'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Retrato%20sentada.jpg',
+  alt: 'Retrato sentada',
+  width: 1920,
+  height: 1080,
+}
+
+// Initial message without attendance numbers, will be updated by client-side script
+const initialWhatsappMessage = `Muchas gracias por la invitacion, la familia ${familyName} te confirma su asistencia el dia ${eventDate}`
+const initialWhatsappLink = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(initialWhatsappMessage)}`
+---
+
+<div
+  class="relative flex items-center justify-center w-screen min-h-screen font-josefin text-white"
+>
+  <Image {src} {alt} {width} {height} class="absolute w-full h-full object-cover -z-10" />
+  <div
+    class="absolute inset-0 bg-black/30 -z-10"
+    style="mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 50%);"
+  >
+  </div>
+  <div class="relative z-10 flex flex-col items-center justify-center text-center p-4">
+    <div class="bg-rose-900/20 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:p-8 max-w-md w-full">
+      <h3
+        class="font-great-vibes text-3xl sm:text-4xl text-white"
+        style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"
+      >
+        Están invitados
+      </h3>
+      <p
+        class="font-great-vibes text-4xl sm:text-5xl text-white mt-4"
+        style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"
+      >
+        {`Familia ${familyName}`}
+      </p>
+      <p class="text-md sm:text-lg mt-6">
+        {`Invitación válida para ${passes} ${passes > 1 ? 'pases' : 'pase'}`}
+      </p>
+
+      <div class="flex gap-4 mt-6">
+        <div class="w-1/2">
+          <label for="adults" class="block text-sm font-medium text-white">Adultos</label>
+          <input
+            type="number"
+            id="adults"
+            name="adults"
+            min="0"
+            value="1"
+            class="mt-1 block w-full px-3 py-2 bg-white/20 border border-transparent rounded-md text-white focus:outline-none focus:ring-2 focus:ring-rose-500"
+          />
+        </div>
+        <div class="w-1/2">
+          <label for="children" class="block text-sm font-medium text-white">Niños</label>
+          <input
+            type="number"
+            id="children"
+            name="children"
+            min="0"
+            value="0"
+            class="mt-1 block w-full px-3 py-2 bg-white/20 border border-transparent rounded-md text-white focus:outline-none focus:ring-2 focus:ring-rose-500"
+          />
+        </div>
+      </div>
+
+      <a
+        id="whatsapp-link"
+        href={initialWhatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-8 inline-block bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-6 sm:px-8 rounded-full transition-colors duration-300 text-sm sm:text-base"
+      >
+        Confirmar asistencia
+      </a>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ familyName, eventDate, whatsAppNumber }}>
+  const adultsInput = document.getElementById('adults')
+  const childrenInput = document.getElementById('children')
+  const whatsappLink = document.getElementById('whatsapp-link')
+
+  function updateWhatsappLink() {
+    const adults = adultsInput.value
+    const children = childrenInput.value
+    const message = `Muchas gracias por la invitacion, la familia ${familyName} te confirma su asistencia el dia ${eventDate} con ${adults} adultos y ${children} niños.`
+    const link = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(message)}`
+    whatsappLink.href = link
+  }
+
+  adultsInput.addEventListener('input', updateWhatsappLink)
+  childrenInput.addEventListener('input', updateWhatsappLink)
+
+  // Initial call to set the link with default values
+  updateWhatsappLink()
+</script>
+

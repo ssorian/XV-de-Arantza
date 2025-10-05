@@ -1,16 +1,26 @@
 ---
-
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+import Greetings from '@/components/Greetings.astro'
+import Counter from '@/components/Counter.astro'
+import WithUs from '@/components/WithUs.astro'
+import Itinerary from '@/components/Itinerary.astro'
+import Ubication from '@/components/Ubication.astro'
+import DressCode from '@/components/DressCode.astro'
+import FollowMe from '@/components/FollowMe.astro'
+import Galery from '@/components/Galery.astro'
+import Invite from '@/components/Invite.astro'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+  <Hero />
+  <Greetings />
+  <WithUs />
+  <Ubication />
+  <Invite whatsAppNumber="7227614236" />
+  <Itinerary />
+  <DressCode />
+  <Counter />
+  <FollowMe />
+  <Galery />
+</Layout>
