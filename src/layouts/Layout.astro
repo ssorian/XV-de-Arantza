@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css'
+import Footer from '@/components/Footer.astro'
 ---
 
 <!doctype html>
@@ -10,7 +11,10 @@ import '@/styles/global.css'
     <title>Document</title>
   </head>
   <body>
-    <slot />
+    <main class="relative">
+      <slot />
+      <Footer />
+    </main>
     <script>
       const animatedElements = document.querySelectorAll('.scroll-animate');
 

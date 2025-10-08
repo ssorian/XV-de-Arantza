@@ -16,16 +16,16 @@ const { src, alt, width, height } = {
   <Image {src} {alt} {width} {height} class="absolute w-full h-full object-cover -z-10" />
 
   <div class="relative text-black py-16 px-8">
-    <h2 class="font-great-vibes text-4xl sm:text-5xl">No te olvides</h2>
-    <p class="font-josefin text-base sm:text-lg mt-2 px-4">
+    <h2 class="font-great-vibes text-5xl scroll-animate">No te olvides</h2>
+    <p class="font-josefin text-base sm:text-lg mt-2 px-4 scroll-animate">
       Inserta tu correo para notificarte cuando falte poco para esta gran fiesta
     </p>
-    <EmailForm client:load />
+    <EmailForm client:load class="scroll-animate" />
   </div>
 
   <div class="relative bottom-20 flex w-full justify-center">
     <div
-      class="text-black text-center backdrop-blur-md bg-white/30 rounded-xl p-4 sm:p-6 md:p-8 mx-4"
+      class="text-black text-center backdrop-blur-md bg-white/30 rounded-xl p-4 sm:p-6 md:p-8 mx-4 scroll-animate"
     >
       <h3 class="text-3xl sm:text-4xl font-bold font-great-vibes">Faltan</h3>
       <div id="countdown" class="flex justify-center gap-2 sm:gap-4 text-xl sm:text-2xl mt-4">

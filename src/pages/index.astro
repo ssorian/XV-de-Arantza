@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import Hero from '@/components/Hero.astro'
+import StickyScroll from '@/components/StickyScroll.tsx'
 import Greetings from '@/components/Greetings.astro'
 import Counter from '@/components/Counter.astro'
 import WithUs from '@/components/WithUs.astro'
@@ -10,9 +11,11 @@ import DressCode from '@/components/DressCode.astro'
 import FollowMe from '@/components/FollowMe.astro'
 import Galery from '@/components/Galery.astro'
 import Invite from '@/components/Invite.astro'
+import Footer from '@/components/Footer.astro'
 ---
 
 <Layout>
+  <StickyScroll client:only="react" />
   <Hero />
   <Greetings />
   <WithUs />
@@ -23,4 +26,5 @@ import Invite from '@/components/Invite.astro'
   <Counter />
   <FollowMe />
   <Galery />
+  <Footer />
 </Layout>

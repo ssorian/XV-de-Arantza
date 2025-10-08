@@ -32,9 +32,9 @@ const images = [
 <div class="relative w-screen min-h-screen font-josefin text-white">
   <Image {src} {alt} {width} {height} class="absolute w-full h-full object-cover" />
   <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
-  <div class="relative z-10 flex flex-col items-center gap-12 py-24 px-4 sm:px-6 lg:px-8">
+  <div class="relative z-10 flex flex-col items-center gap-10 py-24 px-4 sm:px-6 lg:px-8">
     <h2
-      class="text-4xl sm:text-5xl lg:text-7xl font-great-vibes text-center"
+      class="text-5xl font-great-vibes text-center scroll-animate"
       style="text-shadow: 
       1px 1px 0 rgba(0,0,0,0.2),
       2px 2px 0 rgba(0,0,0,0.4),
@@ -45,17 +45,21 @@ const images = [
       Ubicación
     </h2>
     <div class="flex w-full flex-col items-center gap-6">
-      <p class="text-xl sm:text-2xl lg:text-6xl font-great-vibes text-center">{place.name}</p>
+      <p class="text-xl sm:text-2xl lg:text-6xl font-great-vibes text-center scroll-animate">
+        {place.name}
+      </p>
 
-      <a href={place.href}>
+      <a href={place.href} class="scroll-animate">
         <div class="rounded-full bg-rose-400 p-4">
           <Map />
         </div>
       </a>
-      <p class="font-josefin">Da click aqui para ver la ubicacion</p>
-      <p class="text-2xl sm:text-3xl lg:text-3xl font-bold">Te esperamos a las {place.time}</p>
+      <p class="font-josefin scroll-animate">Da click aqui para ver la ubicacion</p>
+      <p class="text-2xl sm:text-3xl lg:text-3xl font-bold scroll-animate">
+        Te esperamos a las {place.time}
+      </p>
     </div>
-    <div class="flex w-full flex-col items-center gap-8">
+    <div class="flex w-full flex-col items-center scroll-animate">
       <Carousel
         images={images}
         slideWidth="w-80 sm:w-96 md:w-[500px]"
