@@ -1,7 +1,10 @@
 ---
 import { Image } from 'astro:assets'
 
-const familyName = Astro.url.searchParams.get('nombre')
+const familyName = Astro.url.searchParams.get('familia')
+const individualName = Astro.url.searchParams.get('nombre')
+const adultsCount = Astro.url.searchParams.get('adultos')
+const childCount = Astro.url.searchParams.get('ninos')
 
 interface Props {
   passes?: number
@@ -9,7 +12,7 @@ interface Props {
   eventDate?: string
 }
 
-const { passes = 1, whatsAppNumber = '', eventDate = '20 de Diciembre' }: Props = Astro.props
+const { whatsAppNumber = '', eventDate = '20 de Diciembre' }: Props = Astro.props
 
 const { src, alt, width, height } = {
   src: 'https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Retrato%20sentada.jpg',
@@ -18,8 +21,10 @@ const { src, alt, width, height } = {
   height: 1080,
 }
 
-// Initial message without attendance numbers, will be updated by client-side script
-const initialWhatsappMessage = `Muchas gracias por la invitacion, la familia ${familyName} te confirma su asistencia el dia ${eventDate}`
+const initialWhatsappMessage = familyName
+  ? `Muchas gracias por la invitación, la familia ${familyName} te confirma su asistencia el dia ${eventDate}`
+  : `Hola, muchas gracias por la invitación, te confirmo mi asitencia para el dia ${eventDate}`
+
 const initialWhatsappLink = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(initialWhatsappMessage)}`
 ---
 
@@ -33,45 +38,41 @@ const initialWhatsappLink = `https://wa.me/${whatsAppNumber}?text=${encodeURICom
   >
   </div>
   <div class="relative z-10 flex flex-col items-center justify-center text-center p-4">
-    <div class="bg-rose-900/20 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:p-8 max-w-md w-full scroll-animate">
+    <div
+      class="bg-rose-900/20 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:p-8 max-w-md w-full scroll-animate"
+    >
       <h2
         class="font-great-vibes text-5xl text-white"
         style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"
       >
-        Están invitados
+        {familyName ? 'Estan invitados' : 'Estas invitado'}
       </h2>
       <p
         class="font-great-vibes text-4xl sm:text-5xl text-white mt-4"
         style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"
       >
-        {`Familia ${familyName}`}
+        {familyName ? `Familia ${familyName}` : `${individualName}`}
       </p>
       <p class="text-md sm:text-lg mt-6">
-        {`Invitación válida para ${passes} ${passes > 1 ? 'pases' : 'pase'}`}
+        {familyName ? 'Invitacion valida para una familia' : 'Invitacion valida para un pase'}
       </p>
 
       <div class="flex gap-4 mt-6">
         <div class="w-1/2">
           <label for="adults" class="block text-sm font-medium text-white">Adultos</label>
-          <input
-            type="number"
-            id="adults"
-            name="adults"
-            min="0"
-            value="1"
+          <div
             class="mt-1 block w-full px-3 py-2 bg-white/20 border border-transparent rounded-md text-white focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+          >
+            {adultsCount}
+          </div>
         </div>
         <div class="w-1/2">
           <label for="children" class="block text-sm font-medium text-white">Niños</label>
-          <input
-            type="number"
-            id="children"
-            name="children"
-            min="0"
-            value="0"
+          <div
             class="mt-1 block w-full px-3 py-2 bg-white/20 border border-transparent rounded-md text-white focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+          >
+            {childCount}
+          </div>
         </div>
       </div>
 
@@ -87,24 +88,3 @@ const initialWhatsappLink = `https://wa.me/${whatsAppNumber}?text=${encodeURICom
     </div>
   </div>
 </div>
-
-<script define:vars={{ familyName, eventDate, whatsAppNumber }}>
-  const adultsInput = document.getElementById('adults')
-  const childrenInput = document.getElementById('children')
-  const whatsappLink = document.getElementById('whatsapp-link')
-
-  function updateWhatsappLink() {
-    const adults = adultsInput.value
-    const children = childrenInput.value
-    const message = `Muchas gracias por la invitacion, la familia ${familyName} te confirma su asistencia el dia ${eventDate} con ${adults} adultos y ${children} niños.`
-    const link = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(message)}`
-    whatsappLink.href = link
-  }
-
-  adultsInput.addEventListener('input', updateWhatsappLink)
-  childrenInput.addEventListener('input', updateWhatsappLink)
-
-  // Initial call to set the link with default values
-  updateWhatsappLink()
-</script>
-

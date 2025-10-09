@@ -1,0 +1,229 @@
+---
+import Layout from '@/layouts/Layout.astro'
+---
+
+<Layout>
+  <main class="relative w-full min-h-screen flex flex-col justify-center items-center p-6">
+    <img
+      src="https://dl1fn8emzdzuebjv.public.blob.vercel-storage.com/Background.png"
+      alt="Background"
+      class="absolute w-full h-full object-cover top-0 left-0 z-0"
+    />
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
+
+    <!-- Título -->
+    <div class="text-center mb-10 relative z-10">
+      <h1
+        class="text-5xl text-white mb-4 font-josefin scroll-animate"
+        style="text-shadow:
+        2px 2px 0 rgba(0,0,0,0.2),
+        4px 4px 0 rgba(0,0,0,0.4),
+        6px 6px 0 rgba(0,0,0,0.6),
+        8px 8px 0 rgba(0,0,0,0.7);"
+      >
+        Generador de invitaciones
+      </h1>
+      <div class="w-24 h-1 bg-rose-400 mx-auto"></div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div
+      class="text-white font-josefin relative rounded-2xl bg-rose-400/30 backdrop-blur-lg shadow-xl gap-8 py-8 px-12 z-10 flex flex-col justify-center items-center max-w-lg w-full"
+    >
+      <h2 class="text-xl text-center mb-4">Llena los campos para generar una URL personalizada</h2>
+
+      <form id="invite-form" class="w-full flex flex-col gap-4">
+        <!-- Tipo de invitación -->
+        <div>
+          <label for="type" class="block mb-1 text-sm font-medium">Tipo de invitación</label>
+          <select
+            id="type"
+            name="type"
+            class="w-full rounded-md bg-white/20 border border-transparent px-3 py-2 text-white focus:ring-2 focus:ring-rose-400 focus:outline-none"
+          >
+            <option value="individual">Individual</option>
+            <option value="familiar">Familiar</option>
+          </select>
+        </div>
+
+        <!-- Nombre del invitado o familia -->
+        <div id="name-group">
+          <label for="name" class="block mb-1 text-sm font-medium">Nombre del invitado</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Ej. Juan Pérez"
+            class="w-full rounded-md bg-white/20 border border-transparent px-3 py-2 text-white placeholder-white/70 focus:ring-2 focus:ring-rose-400 focus:outline-none"
+            required
+          />
+        </div>
+
+        <!-- Campo de pases para invitación individual -->
+        <div id="passes-field">
+          <label for="passes" class="block mb-1 text-sm font-medium">Número de pases</label>
+          <input
+            type="number"
+            id="passes"
+            name="passes"
+            min="1"
+            value="1"
+            class="w-full rounded-md bg-white/20 border border-transparent px-3 py-2 text-white focus:ring-2 focus:ring-rose-400 focus:outline-none"
+          />
+        </div>
+
+        <!-- Campos adicionales para invitación familiar -->
+        <div id="family-fields" class="hidden">
+          <div>
+            <label for="adults" class="block mb-1 text-sm font-medium">Número de adultos</label>
+            <input
+              type="number"
+              id="adults"
+              name="adults"
+              min="1"
+              value="1"
+              class="w-full rounded-md bg-white/20 border border-transparent px-3 py-2 text-white focus:ring-2 focus:ring-rose-400 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label for="children" class="block mb-1 text-sm font-medium">Número de niños</label>
+            <input
+              type="number"
+              id="children"
+              name="children"
+              min="0"
+              value="0"
+              class="w-full rounded-md bg-white/20 border border-transparent px-3 py-2 text-white focus:ring-2 focus:ring-rose-400 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <!-- Botón -->
+        <button
+          type="submit"
+          class="mt-4 bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
+        >
+          Generar URL
+        </button>
+      </form>
+
+      <!-- Resultado -->
+      <div id="result" class="flex flex-col mt-6 w-full rounded-2xl bg-white/20 p-4 hidden">
+        <p class="text-lg font-semibold mb-3 text-center">URL generada:</p>
+        <div class="flex flex-col gap-3">
+          <div
+            class="bg-white/10 rounded-md p-3 break-all text-sm text-white"
+            id="generated-url"
+            href="#"
+            target="_blank"
+            class="text-rose-200 hover:text-rose-100
+            underline"
+          >
+          </div>
+        </div>
+        <button
+          id="copy-button"
+          class="bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 flex items-center justify-center gap-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="copy-text">Copiar URL</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const typeSelect = document.getElementById('type')
+    const nameInput = document.getElementById('name')
+    const nameGroup = document.getElementById('name-group')
+    const passesField = document.getElementById('passes-field')
+    const familyFields = document.getElementById('family-fields')
+    const form = document.getElementById('invite-form')
+    const result = document.getElementById('result')
+    const generatedUrl = document.getElementById('generated-url')
+    const copyButton = document.getElementById('copy-button')
+    const copyText = document.getElementById('copy-text')
+
+    // Mostrar/ocultar campos según tipo
+    typeSelect.addEventListener('change', () => {
+      if (typeSelect.value === 'familiar') {
+        familyFields.classList.remove('hidden')
+        passesField.classList.add('hidden')
+        nameInput.placeholder = 'Ej. Familia López'
+        document.querySelector('label[for="name"]').textContent = 'Nombre de la familia'
+      } else {
+        familyFields.classList.add('hidden')
+        passesField.classList.remove('hidden')
+        nameInput.placeholder = 'Ej. Juan Pérez'
+        document.querySelector('label[for="name"]').textContent = 'Nombre del invitado'
+      }
+    })
+
+    // Generar URL
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+
+      const type = typeSelect.value
+      const name = nameInput.value.trim()
+
+      if (!name) {
+        alert('Por favor ingresa un nombre.')
+        return
+      }
+
+      let url = 'https://xv-de-arantza.vercel.app?'
+
+      if (type === 'individual') {
+        const passes = document.getElementById('passes').value
+        url += `nombre=${encodeURIComponent(name)}&pases=${passes}`
+      } else {
+        const adults = document.getElementById('adults').value
+        const children = document.getElementById('children').value
+        url += `familia=${encodeURIComponent(name)}&adultos=${adults}&ninos=${children}`
+      }
+
+      generatedUrl.href = url
+      generatedUrl.textContent = url
+      result.classList.remove('hidden')
+
+      // Resetear texto del botón
+      copyText.textContent = 'Copiar URL'
+    })
+
+    // Copiar URL al portapapeles
+    copyButton.addEventListener('click', async () => {
+      const url = generatedUrl.textContent
+
+      try {
+        await navigator.clipboard.writeText(url)
+        copyText.textContent = '¡Copiado!'
+
+        // Volver al texto original después de 2 segundos
+        setTimeout(() => {
+          copyText.textContent = 'Copiar URL'
+        }, 2000)
+      } catch (err) {
+        console.error('Error al copiar:', err)
+        copyText.textContent = 'Error al copiar'
+
+        setTimeout(() => {
+          copyText.textContent = 'Copiar URL'
+        }, 2000)
+      }
+    })
+  </script>
+</Layout>
